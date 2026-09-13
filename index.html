@@ -289,6 +289,22 @@
     .whisk-body,.whisk-side{padding:30px 26px}
     .dist-grid{grid-template-columns:1fr}
   }
+
+/* Regional travel coverage and listing recognition */
+.guest-favorite-banner{display:flex;align-items:center;justify-content:center;gap:12px;background:#fbf5e8;color:#243c31;padding:14px 24px;text-align:center;text-decoration:none;border-bottom:1px solid #d8c9a9;font-size:.95rem;line-height:1.5}
+.guest-favorite-banner .gf-star{font-size:1.6rem;color:#8b651c}
+.guest-favorite-banner strong{font-weight:750}.guest-favorite-banner small{display:block;font-size:.78rem;color:#615b4f}
+.guest-favorite-banner:hover{text-decoration:underline}.guest-favorite-banner:focus-visible{outline:3px solid #8b651c;outline-offset:-4px}
+.travel-press{padding:76px 0;background:#fcf8ef;color:#263a30}
+.press-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
+.press-story{border-top:3px solid #ae853c;padding:23px 0 10px;display:flex;flex-direction:column;gap:15px;min-width:0}
+.press-story .press-source{font-size:.83rem;font-weight:700;letter-spacing:.04em;margin:0}
+.press-story h3{font-family:Georgia,serif;font-size:1.45rem;line-height:1.25;margin:0}
+.press-story blockquote{font-family:Georgia,serif;font-size:1.18rem;line-height:1.6;margin:0;color:#403b30}
+.press-story p{line-height:1.6;margin:0}.press-story .press-nearby{font-size:.88rem;color:#625947}
+.press-story a{color:#315744;font-weight:650;text-decoration:underline;text-underline-offset:4px;margin-top:auto}
+.press-footnote{font-size:.8rem;color:#625947;margin-top:25px;line-height:1.6}
+@media(max-width:760px){.press-grid{grid-template-columns:1fr;gap:25px}.travel-press{padding:52px 0}.guest-favorite-banner{padding:12px 18px}}
 </style>
 </head>
 <body>
@@ -328,6 +344,12 @@
     </div>
   </div>
 </header>
+
+<!-- AIRBNB LISTING RECOGNITION -->
+<a class="guest-favorite-banner" href="https://www.airbnb.com/rooms/1716221130922124391" target="_blank" rel="noopener noreferrer" aria-label="The Distiller's Estate is a Guest Favorite on Airbnb. View the listing.">
+  <span class="gf-star" aria-hidden="true">★</span>
+  <span><strong>Guest Favorite on Airbnb</strong><small>The Distiller’s Estate · See our guest reviews</small></span>
+</a>
 
 <!-- TRUST -->
 <div class="trust">
@@ -494,6 +516,38 @@
     <p class="dist-note reveal" id="distNote"></p>
     <div class="dist-grid reveal" id="distGrid"><!-- injected by JS --></div>
   </div>
+</section>
+
+<!-- REGIONAL TRAVEL PRESS -->
+<section class="travel-press" id="travel-press" aria-labelledby="press-heading">
+ <div class="wrap">
+  <div class="section-head"><p class="eyebrow">Bourbon country in the press</p><h2 id="press-heading">A few good reasons to make a weekend of it</h2><p>Pick a tasting, leave time for a great lunch, and bring your favorite people. Here’s what the travel writers are talking about.</p></div>
+  <div class="press-grid">
+   <article class="press-story">
+    <p class="press-source">Travel + Leisure · August 2025</p>
+    <h3>Bardstown’s food-and-drink moment</h3>
+    <blockquote cite="https://www.travelandleisure.com/guide-to-bardstown-kentucky-11786570">“one of the most delicious small towns”</blockquote>
+    <p class="press-nearby">Downtown Bardstown · about 16 minutes from the house</p>
+    <a href="https://www.travelandleisure.com/guide-to-bardstown-kentucky-11786570" target="_blank" rel="noopener noreferrer">Read the Bardstown guide ↗</a>
+   </article>
+   <article class="press-story">
+    <p class="press-source">Condé Nast Traveler · June 2024</p>
+    <h3>Make room for the classics</h3>
+    <blockquote cite="https://www.cntraveler.com/story/a-guide-to-the-kentucky-bourbon-trail">“All the heavy hitters are based in Bardstown”</blockquote>
+    <p>The guide spotlights Heaven Hill’s bourbon-history exhibits, Preservation’s farm setting, and a Clermont detour for Jim Beam and a Southern-style meal.</p>
+    <p class="press-nearby">Heaven Hill &amp; Preservation · about 20 minutes<br>James B. Beam · about 21 minutes</p>
+    <a href="https://www.cntraveler.com/story/a-guide-to-the-kentucky-bourbon-trail" target="_blank" rel="noopener noreferrer">Read the Bourbon Trail guide ↗</a>
+   </article>
+   <article class="press-story">
+    <p class="press-source">Travel + Leisure · April 2026</p>
+    <h3>Bardstown Bourbon Company</h3>
+    <blockquote cite="https://www.travelandleisure.com/food-drink/cocktails-spirits/kentucky-distilleries-and-tours">“food pairings and mixology classes”</blockquote>
+    <p class="press-nearby">About 22 minutes from the house</p>
+    <a href="https://www.travelandleisure.com/food-drink/cocktails-spirits/kentucky-distilleries-and-tours" target="_blank" rel="noopener noreferrer">Read the distillery roundup ↗</a>
+   </article>
+  </div>
+  <p class="press-footnote">These articles cover the area and its distilleries, not The Distiller’s Estate. Approximate drives use our September 2026 route checks; traffic varies. Check tour schedules and reserve with each distillery before you go.</p>
+ </div>
 </section>
 
 <!-- WHISK ME -->
