@@ -199,7 +199,55 @@
   .loc-list li svg{width:22px;height:22px;stroke:var(--amber);stroke-width:1.6;fill:none;flex-shrink:0;margin-top:3px}
   .loc-list b{display:block;font-size:1.02rem}
   .loc-list span{font-size:.88rem;color:var(--muted)}
-  .map-embed{border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);aspect-ratio:1/1;border:0}
+  .map-plot{position:relative;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);
+            aspect-ratio:1/1;margin:0;background:#e8e0d0}
+  .map-plot img{width:100%;height:100%;object-fit:cover;display:block}
+  .map-pins{position:absolute;inset:0}
+  /* The pin is a zero-size anchor sitting exactly on the coordinate. The star is
+     centred on it and the label hangs off to one side, so the star always marks
+     the real location. (Centring the whole star+label box instead would push the
+     star off the point by half the label width, which is about a mile here.) */
+  .pin{position:absolute;width:0;height:0}
+  .pin .star{position:absolute;left:0;top:0;transform:translate(-50%,-50%);
+             width:24px;height:24px;fill:#d9482b;stroke:#fff;stroke-width:2;stroke-linejoin:round;
+             paint-order:stroke;overflow:visible;filter:drop-shadow(0 1px 2px rgba(0,0,0,.35))}
+  .pin.home .star{width:36px;height:36px;fill:var(--gold);stroke-width:2.2;
+                  filter:drop-shadow(0 2px 4px rgba(0,0,0,.45))}
+  .pin .tag{position:absolute;white-space:nowrap;background:#fff;
+            border-radius:10px;padding:4px 10px;font-size:.72rem;line-height:1.3;
+            color:var(--ink);box-shadow:0 2px 8px rgba(38,32,25,.25);text-align:left;
+            border:1px solid rgba(38,32,25,.08)}
+  .pin .tag b{display:block;font-size:.78rem;font-weight:700;color:var(--forest)}
+  .pin .tag span{color:var(--muted);font-size:.67rem}
+  .pin.home .tag{background:var(--forest);color:var(--cream);text-align:center;border-color:transparent}
+  .pin.home .tag b{color:var(--cream)}
+  .pin.home .tag span{color:var(--gold)}
+  .pin[data-side="right"]  .tag{left:17px;top:0;transform:translateY(-50%)}
+  .pin[data-side="left"]   .tag{right:17px;top:0;transform:translateY(-50%)}
+  .pin[data-side="top"]    .tag{bottom:17px;left:0;transform:translateX(-50%)}
+  .pin[data-side="bottom"] .tag{top:17px;left:0;transform:translateX(-50%)}
+  .pin.home[data-side="right"]  .tag{left:24px}
+  .pin.home[data-side="left"]   .tag{right:24px}
+  .pin.home[data-side="top"]    .tag{bottom:24px}
+  .pin.home[data-side="bottom"] .tag{top:24px}
+  .map-credit{position:absolute;right:8px;bottom:7px;font-size:.6rem;color:var(--muted);
+              background:rgba(247,242,233,.8);padding:2px 7px;border-radius:100px}
+  .map-directions{position:absolute;left:14px;bottom:12px;background:var(--forest);color:var(--cream);
+                  font-size:.78rem;font-weight:500;padding:9px 16px;border-radius:100px;
+                  box-shadow:0 3px 12px rgba(38,32,25,.3);transition:.2s}
+  .map-directions:hover{background:var(--amber)}
+  @media(max-width:560px){
+    /* Phone-width map: keep every label, but name only, so they never collide. */
+    .map-credit{font-size:.5rem;right:6px;bottom:5px}
+    .pin .tag{padding:2px 7px;border-radius:8px}
+    .pin .tag b{font-size:.66rem}
+    .pin:not(.home) .tag span{display:none}
+    .pin.home .tag span{font-size:.6rem}
+    .pin .star{width:19px;height:19px}
+    .pin.home .star{width:28px;height:28px}
+    .pin[data-side="right"] .tag{left:13px} .pin[data-side="left"] .tag{right:13px}
+    .pin[data-side="top"] .tag{bottom:13px} .pin[data-side="bottom"] .tag{top:13px}
+  }
 
   /* FAQ */
   .faq{background:var(--cream)}
@@ -497,7 +545,12 @@
     </div>
     <div class="loc-grid reveal">
       <ul class="loc-list" id="locList"><!-- injected by JS --></ul>
-      <iframe class="map-embed" id="mapEmbed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Map"></iframe>
+      <figure class="map-plot" id="mapPlot">
+        <img id="mapImg" alt="Map of Nelson and Bullitt County showing The Distiller's Estate, Bardstown, and nearby distilleries" loading="lazy" />
+        <div class="map-pins" id="mapPins"><!-- injected by JS --></div>
+        <figcaption class="map-credit">Map data &copy; OpenStreetMap contributors</figcaption>
+        <a class="map-directions" id="mapDirections" target="_blank" rel="noopener">Get directions</a>
+      </figure>
     </div>
   </div>
 </section>
@@ -654,6 +707,16 @@ const CONFIG = {
 
   // --- MAP ---
   mapQuery: "980 Colonel Cox Rd S, Coxs Creek, KY 40013",
+  // Plotted local map: OpenStreetMap tiles at zoom 13, geocoded 09/14/2026.
+  // x/y are percentages of images/map-bardstown.jpg. Drive times match the distances JSON.
+  mapImage: "images/map-bardstown.jpg",
+  mapPoints: [
+    {name:"The Distiller's Estate", x:74.44, y:8.79, note:"You are here", home:true, side:"bottom"},
+    {name:"Bardstown",              x:80.14, y:72.78, note:"Bourbon Capital · 16 min", side:"top"},
+    {name:"Heaven Hill",            x:80.40, y:79.21, note:"Bourbon Experience · 20 min", side:"left"},
+    {name:"Jim Beam",               x:19.60, y:23.25, note:"American Stillhouse · 21 min", side:"top"},
+    {name:"Bernheim Forest",        x:28.63, y:35.27, note:"Arboretum & trails · 21 min", side:"bottom"},
+  ],
 
   // --- IMAGES ---
   heroImage: "images/hero.jpg",
@@ -854,7 +917,13 @@ $('#reviewGrid').innerHTML = (CONFIG.reviews||[]).map(r => `
 $('#locList').innerHTML = CONFIG.nearby.map(n => `
   <li><svg viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-6.2-7-11a7 7 0 0114 0c0 4.8-7 11-7 11z" stroke-width="1.6"/><circle cx="12" cy="10" r="2.4" stroke-width="1.6"/></svg>
   <div><b>${n.title}</b><span>${n.desc}</span></div></li>`).join('');
-$('#mapEmbed').src = "https://www.google.com/maps?q=" + encodeURIComponent(CONFIG.mapQuery) + "&output=embed";
+$('#mapImg').src = CONFIG.mapImage;
+const STAR = '<svg class="star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.6l3 7.1 7.7.6-5.8 5 1.7 7.5L12 17.8 5.4 21.8l1.7-7.5-5.8-5 7.7-.6z"/></svg>';
+$('#mapPins').innerHTML = CONFIG.mapPoints.map(p => `
+  <div class="pin${p.home ? ' home' : ''}" data-side="${p.side}" style="left:${p.x}%;top:${p.y}%">
+    ${STAR}<div class="tag"><b>${p.name}</b><span>${p.note}</span></div>
+  </div>`).join('');
+$('#mapDirections').href = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(CONFIG.mapQuery);
 
 // FAQ
 $('#faqWrap').innerHTML = CONFIG.faq.map(f => `
